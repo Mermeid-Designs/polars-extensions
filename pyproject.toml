@@ -1,0 +1,100 @@
+[project]
+name = 'example-library'  # TODO: add project name (substituting underscores for hyphens)
+description = 'description of library'  # TODO: write short description of project
+authors = [
+    {name = 'first last', email = 'first@domain.extension'},  # TODO: substitute placeholders with your information
+]
+maintainers = [
+    {name = 'first last', email = 'first@domain.extension'},  # TODO: substitute placeholders with relevant information
+]
+classifiers = [
+    'Programming Language :: Python',
+    'Programming Language :: Python :: 3',
+    'Programming Language :: Python :: 3 :: Only',
+    'Programming Language :: Python :: 3.11',
+    'Intended Audience :: Developers',
+    'Operating System :: Unix',
+    'Operating System :: POSIX :: Linux',
+    'Environment :: MacOS X',
+]
+requires-python = '~=3.11'
+dependencies = [
+    'numpy~=1.26'
+]  # TODO: add package dependencies for this project
+dynamic = ["version", "readme"]
+
+[tool.setuptools.dynamic]
+readme = {file = ["README.md", "USAGE.md"], content-type = 'text/markdown'}
+
+[tool.pytest.ini_options]
+addopts = [
+    "--import-mode=importlib",
+]
+markers = [
+    "unit_test: mark a test as an unit test (these should be inexpensive to run and run frequently)",
+    "integration_test: mark a test as an integration test (these should be moderately expensive and infrequently run; test inter-module communication/interaction)",
+    "end_test: mark a test as an end-to-end test (these should be expensive and rarely run; practical tests which run full live-scenarios - no mocks)",
+]  # TODO: add custom markers for this project
+testpaths = [
+    '**/test',
+    '**/tests',
+    '**/test_*.py',
+    '**/tests_*.py',
+]
+pythonpath = [ "." ]
+xfail_strict = true
+
+[tool.black]
+skip-string-normalization = true
+
+[tool.ruff.lint]
+exclude = ["examples"]
+extend-select = ['Q', 'C90', 'UP', 'I', 'D', 'T']
+extend-ignore = ['D104', 'D105', 'D107', 'D205', 'D415', 'E501']
+flake8-quotes = {inline-quotes = 'single', multiline-quotes = 'double'}
+mccabe = { max-complexity = 14 }
+isort = { known-first-party = ['.', '**/test', '**/tests'] }
+
+[tool.ruff.lint.extend-per-file-ignores]
+"**/test/*.py" = ['T', 'E721', 'F811']
+"**/tests/*.py" = ['T', 'E721', 'F811']
+"**/test_*.py" = ['T', 'E721', 'F811']
+"**/tests_*.py" = ['T', 'E721', 'F811']
+
+[tool.ruff.lint.pydocstyle]
+convention = "google"
+
+[tool.ruff.lint.per-file-ignores]
+'docs/*' = ['D']
+'**/*__init__.py' = ['F401', 'F405', 'F403', 'D']
+'**/test/*' = ['D']
+'**/tests/*' = ['D']
+"**/test_*.py" = ['D']
+"**/tests_*.py" = ['D']
+
+[tool.setuptools.packages.find]
+# Automatically identify installable python libraries/packages
+where = ["."]
+include = ["*"]
+exclude = [
+    "test.*",
+    "tests.*",
+    "*.test.*",
+    "*.tests.*",
+    "test_*",
+    "tests_*",
+    "*.test_*",
+    "*.tests_*"
+]
+
+[tool.setuptools]
+include-package-data = true
+
+[tool.setuptools.package-data]
+# Include non-python files in a python library/package
+# TODO: add all relevant resource handles below in the format <src-python-module> = [<glob-pattern>]
+#   (e.g.   Add ALL txt files within the ENTIRE package:    "*" = ["**/*.txt"]    )
+#   (e.g.   Add ALL txt files within a specific SUB-package:    "sub_module_name" = ["**/*.txt"]    )
+
+[project.scripts]
+# TODO: add all relevant script handles below in the format <handle> = "<module>:<method>"

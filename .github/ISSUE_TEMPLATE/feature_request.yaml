@@ -1,0 +1,43 @@
+name: Feature request
+description: 'Suggest a new feature for this library'
+labels: [🎉 enhancement]
+assignees:
+  - data-developers
+body:
+  - type: markdown
+    attributes:
+      value: Thank you for contributing to this library!
+
+  - type: checkboxes
+    id: affected-module
+    attributes:
+      label: Affected Modules
+      description: Which of the following modules/libraries/packages of this repo would the feature affect?
+      # TODO: Add relevant modules/libraries/packages. 
+      options:
+        - label: '[example_library](https://github.com/Mermeid-Designs/single-repo-python/blob/main/example_library)'
+    validations:
+      required: true
+
+  - type: textarea
+    id: description
+    attributes:
+      label: Description
+      description: |
+        Please give as much detail as possible about the feature you would like to suggest. 🙏
+
+        You might like to add:
+        * A demo of how code might look when using the feature
+        * Your use case(s) for the feature
+        * Why the feature should be added to to this library (as opposed to another library or just implemented in your code)
+    validations:
+      required: true
+
+  - type: input
+    id: affected-components
+    attributes:
+      label: Affected Components
+      description: Which of the following parts of this library would the feature affect?
+      # TODO: Add relevant library components. 
+      #   A good rule of thumb is every sub-module or sub-package is it's own component.
+      placeholder: ex. cloud storage upload

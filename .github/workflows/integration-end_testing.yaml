@@ -1,0 +1,35 @@
+name: Integration and End-to-end Testing
+
+on:
+  push:
+    branches: [main, staging]
+  pull_request:
+    branches: [main, staging]
+
+jobs:
+  main:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Python "3.11"
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.11"
+      - name: Setup .netrc
+        run: |
+          echo -e "machine github.com\nlogin ${{ secrets.CUSTOM_GITHUB_TOKEN }}\npassword \n" > ~/.netrc
+          chmod 600 ~/.netrc
+      - name: Install dependencies
+        run: |
+          pip install .
+          pip install pytest
+      - name: Integration testing
+        run: |
+          set +e
+          make integration-test
+          exit $(( $? == 5 ? 0 : $? ))
+      - name: End-to-end testing
+        run: |
+          set +e
+          make end-test
+          exit $(( $? == 5 ? 0 : $? ))

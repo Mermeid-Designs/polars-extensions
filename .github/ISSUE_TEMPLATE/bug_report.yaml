@@ -1,0 +1,70 @@
+name: Bug Report
+description: Report a bug or unexpected behavior
+labels: [🪲 bug, unconfirmed]
+assignees:
+  - data-developers
+body:
+  - type: markdown
+    attributes:
+      value: Thank you for taking the time to fill out this bug report!
+
+  - type: dropdown
+    id: affected-module
+    attributes:
+      label: Affected package
+      description: Which of the following libraries/packages within this repo is not functioning as intended?
+      # TODO: Add relevant modules/libraries/packages. 
+      options:
+        - label: 'example_library'
+    validations:
+      required: true
+    
+  - type: textarea
+    id: description
+    attributes:
+      label: Description
+      description: |
+        Please explain what you're seeing and what you would expect to see.
+        
+        Please provide as much detail as possible to make understanding and solving your problem as quick as possible. 🙏
+    validations:
+      required: true
+      
+  - type: textarea
+    id: example
+    attributes:
+      label: Example Code
+      description: >
+        If applicable, please add a self-contained,
+        [minimal, reproducible, example](https://stackoverflow.com/help/minimal-reproducible-example)
+        demonstrating the bug.
+      placeholder: |
+        import example_library as ex_lib
+        ...
+      render: Python
+
+  - type: textarea
+    id: logs
+    attributes:
+      label: Relevant log output
+      description: Please copy and paste any relevant log output.
+      placeholder: |
+        ...
+        FileNotFoundError: [Errno 2] No such file or directory: path/to/example_directory
+      render: Shell
+
+  - type: textarea
+    id: version
+    attributes:
+      label: Library, Python & OS Version
+      description: |
+        Which version of the library & Python are you using, and on which Operating System?
+
+        Please run the following command and copy the output below, substituting `example_library` with the relevant library/package:
+
+        ```bash
+        python -c "import example_library.version; print(example_library.version.version_info())"
+        ```
+      render: Text
+    validations:
+      required: true

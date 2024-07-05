@@ -1,0 +1,30 @@
+name: Unit Testing
+
+on:
+  push:
+    branches: [main, staging, dev]
+  pull_request:
+    branches: [main, staging, dev]
+
+jobs:
+  main:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Python "3.11"
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.11"
+      - name: Setup .netrc
+        run: |
+          echo -e "machine github.com\nlogin ${{ secrets.CUSTOM_GITHUB_TOKEN }}\npassword \n" > ~/.netrc
+          chmod 600 ~/.netrc
+      - name: Install dependencies
+        run: |
+          pip install .
+          pip install pytest
+      - name: Test with pytest
+        run: |
+          set +e
+          make unit-test
+          exit $(( $? == 5 ? 0 : $? ))

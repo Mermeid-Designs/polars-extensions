@@ -1,0 +1,46 @@
+name: Linting
+
+on:
+  push:
+    branches: [main, master, dev]
+    paths: ['**.py', '**.pyc', '**.pyo', '**.pyd']
+  pull_request:
+    paths: ['**.py', '**.pyc', '**.pyo', '**.pyd']
+
+jobs:
+  black:
+    name: Code Formatting with Black
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Check if Python files exist
+        id: sufficient_files
+        run: |
+          shopt -s nullglob
+          files=(**/*.py)
+          echo "py_files_exist=$(( ${#files[@]} > 0))" >> "$GITHUB_OUTPUT"
+      - name: Set up Python "3.11"
+        if: steps.sufficient_files.outputs.py_files_exist == 1
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.11"
+      - name: Install dependencies
+        if: steps.sufficient_files.outputs.py_files_exist == 1
+        run: pip install black
+      - name: Check black
+        if: steps.sufficient_files.outputs.py_files_exist == 1
+        run: python -m black --check .
+
+  ruff:
+    name: Code Formatting and Package Sorting with Ruff
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Python "3.11"
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.11"
+      - name: Install dependencies
+        run: pip install ruff
+      - name: Check ruff
+        run: python -m ruff check .
