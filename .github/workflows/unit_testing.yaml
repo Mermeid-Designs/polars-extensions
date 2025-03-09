@@ -1,0 +1,42 @@
+name: Unit Testing
+
+on:
+  push:
+    branches: [main, staging, dev]
+    paths: ['**.py', '**.pyc', '**.pyo', '**.pyd']
+  pull_request:
+    branches: [main, staging, dev]
+    paths: ['**.py', '**.pyc', '**.pyo', '**.pyd']
+
+
+jobs:
+  main:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python "3.11"
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.11"
+
+      - name: Setup Just
+        uses: ./.github/actions/setup-just
+
+      - name: Test with pytest
+        id: pytest
+        continue-on-error: true
+        run: |
+          just unit-test
+
+      - name: Check pytest result
+        if: steps.pytest.outcome == 'failure'
+        run: |
+          if [ ${{ steps.pytest.exitcode }} -eq 5 ]; then
+            echo "Pytest exited with code 5 (no tests collected), treating as success"
+            exit 0
+          else
+            echo "Pytest failed with exit code ${{ steps.pytest.exitcode }}"
+            exit ${{ steps.pytest.exitcode }}
+          fi

@@ -1,0 +1,149 @@
+[build-system]
+requires = ["poetry-core>=2.0"]
+build-backend = "poetry.core.masonry.api"
+
+# Include the plugin in the build-system section of pyproject.toml for interoperability with PEP 517 build frontends
+# [build-system]
+# requires = ["poetry-core>=2.0.0", "poetry-dynamic-versioning>=1.0.0,<2.0.0"]
+# build-backend = "poetry_dynamic_versioning.backend"
+
+[project]
+name = 'example-library'  # TODO: add project name (substituting underscores for hyphens)
+description = 'description of library'  # TODO: write short description of project
+authors = [
+    {name = 'first last', email = 'first@domain.extension'},  # TODO: substitute placeholders with your information
+]
+maintainers = [
+    {name = 'first last', email = 'first@domain.extension'},  # TODO: substitute placeholders with relevant information
+]
+requires-python = '>=3.10,<4.0'  # TODO: adjust this as needed
+license = { file = "LICENSE" }
+dependencies = [
+    'numpy~=1.26'
+]  # TODO: add package dependencies for this project
+dynamic = ["version", "readme", "classifiers"]
+keywords = ["infrastructure"]  # TODO: add relevant keywords for this project
+
+[project.urls]
+Homepage = "https://github.com/user/repo"  # TODO: substitute placeholder with repo URL
+Changelog = "https://github.com/user/repo/blob/main/CHANGELOG.md"  # TODO: substitute placeholder with repo URL
+Repository = "https://github.com/user/repo"  # TODO: substitute placeholder with repo URL
+Documentation = "https://github.com/user/repo/blob/main/README.md"  # TODO: substitute placeholder with repo URL
+
+[project.scripts]
+# TODO: add all relevant script handles below in the format <handle> = "<module>:<method>"
+
+[project.gui-scripts]
+# TODO: add all relevant GUIscript handles below in the format <handle> = "<module>:<method>"
+
+[tool.poetry]
+requires-poetry = ">=2.0"
+readme = ["example_library/README.md", "example_library/USAGE.md"]  # TODO: add all relevant readme files (e.g. "docs/README.md")
+classifiers = [
+    "Development Status :: 4 - Beta",
+     # Indicate who your project is intended for
+    "Intended Audience :: Developers",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    # Supported Python versions
+    'Programming Language :: Python :: 3',
+    'Programming Language :: Python :: 3.10',
+    'Programming Language :: Python :: 3.11',
+    'Programming Language :: Python :: 3.12',
+
+]  # TODO: add all relevant classifiers for this project
+# Include non-python files in a python library/package
+# TODO: add all relevant resource handles below in the format <src-python-module> = [<glob-pattern>]
+#   (e.g.   Add ALL txt files within the ENTIRE package:    include = [{path = "**/*.txt", format = "sdist"}]    )
+#   (e.g.   Add ALL txt files within a specific SUB-package:    include = [{path = "sub_module_name/**/*.txt", format = "sdist"}]    )
+include = [
+    { path = "**/tests", format = "sdist" }  # Include any tests directories
+]
+# TODO: Include all python packages you'd like to include in the package
+# Optional `to` parameter is designed to specify the relative destination path where the package will be located upon installation
+#   useful for `lib` packages (e.g. { include = "my_package", from = "lib", to = "target_package" })
+packages = []
+version = "0.0.0"
+
+[tool.poetry.requires-plugins]
+poetry-dynamic-versioning = { version = ">=1.0.0,<2.0.0", extras = ["plugin"] }
+
+[tool.poetry-dynamic-versioning]
+enable = true
+
+[tool.poetry.group.dev.dependencies]
+pre-commit = ">=2.10"
+# add setuptools for PyCharm
+# see https://youtrack.jetbrains.com/issue/PY-48909
+# and https://github.com/JetBrains/intellij-community/commit/3f37786ec0bf5066e4527690d1068b5a00680ea3
+setuptools = { version = ">=60", python = ">=3.10" }
+
+[tool.poetry.group.test.dependencies]
+coverage = ">=7.2.0"
+pytest = ">=8.0"
+pytest-cov = ">=4.0"
+pytest-mock = ">=3.9"
+pytest-randomly = ">=3.12"
+pytest-xdist = { version = ">=3.1", extras = ["psutil"] }
+urllib3 = "<2.3"  # see https://github.com/gabrielfalcao/HTTPretty/issues/484
+pytest-asyncio = "^0.25.3"
+
+[tool.poetry.group.typing.dependencies]
+mypy = ">=1.8.0"
+types-requests = ">=2.28.8"
+
+[tool.poetry.group.formatting.dependencies]
+black = ">=24.0"
+ruff = ">=0.1.1"
+
+# Only used for github actions
+[tool.poetry.group.github-actions]
+optional = true
+[tool.poetry.group.github-actions.dependencies]
+pytest-github-actions-annotate-failures = ">=0.3"
+
+[tool.pytest.ini_options]
+addopts = [
+    "--import-mode=importlib",
+]
+markers = [
+    "unit_test: mark a test as an unit test (these should be inexpensive to run and run frequently)",
+    "integration_test: mark a test as an integration test (these should be moderately expensive and infrequently run; test inter-module communication/interaction)",
+    "end_test: mark a test as an end-to-end test (these should be expensive and rarely run; practical tests which run full live-scenarios - no mocks)",
+]  # TODO: add custom markers for this project
+testpaths = [
+    '**/test',
+    '**/tests',
+    '**/test_*.py',
+    '**/tests_*.py',
+]
+pythonpath = [ "." ]
+xfail_strict = true
+
+[tool.black]
+skip-string-normalization = true
+
+[tool.ruff.lint]
+exclude = ["examples"]
+extend-select = ['Q', 'C90', 'UP', 'I', 'D', 'T']
+extend-ignore = ['D104', 'D105', 'D107', 'D205', 'D415', 'E501']
+flake8-quotes = {inline-quotes = 'single', multiline-quotes = 'double'}
+mccabe = { max-complexity = 14 }
+isort = { known-first-party = ['.', '**/test', '**/tests'] }
+
+[tool.ruff.lint.extend-per-file-ignores]
+"**/test/*.py" = ['T', 'E721', 'F811']
+"**/tests/*.py" = ['T', 'E721', 'F811']
+"**/test_*.py" = ['T', 'E721', 'F811']
+"**/tests_*.py" = ['T', 'E721', 'F811']
+
+[tool.ruff.lint.pydocstyle]
+convention = "google"
+
+[tool.ruff.lint.per-file-ignores]
+'examples/*' = ['D100', 'F811', 'F821']
+'docs/*' = ['D']
+'**/*__init__.py' = ['F401', 'F405', 'F403', 'D']
+'**/test/*' = ['D']
+'**/tests/*' = ['D']
+"**/test_*.py" = ['D']
+"**/tests_*.py" = ['D']

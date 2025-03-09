@@ -1,0 +1,20 @@
+name: 'setup-just'
+description: 'Install Just'
+
+runs:
+  using: "composite"
+  steps:
+    - name: Set up Just
+      shell: bash
+      run: |
+        curl -sSL https://github.com/casey/just/releases/download/1.38.0/just-1.38.0-x86_64-unknown-linux-musl.tar.gz | tar xz -C /usr/local/bin
+        chmod +x /usr/local/bin/just
+
+    # - name: Install Just
+    #   shell: bash
+    #   run: |
+    #     curl --proto '=https' --tlsv1.2 -sSf https://just.systems/install.sh | bash -s -- --to /usr/local/bin
+
+    - name: Verify Just installation
+      shell: bash
+      run: just --version

@@ -1,0 +1,51 @@
+name: Integration and End-to-end Testing
+
+on:
+  push:
+    branches: [main, staging]
+    paths: ['**.py', '**.pyc', '**.pyo', '**.pyd']
+  pull_request:
+    branches: [main, staging]
+    paths: ['**.py', '**.pyc', '**.pyo', '**.pyd']
+jobs:
+  main:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python "3.11"
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.11"
+
+      - name: Setup Just
+        uses: ./.github/actions/setup-just
+
+      - name: Integration testing
+        id: integration-test
+        continue-on-error: true
+        run: |
+          just integration-test
+
+      - name: Check integration test result
+        if: steps.integration-test.outcome == 'failure'
+        run: |
+          if [ ${{ steps.integration-test.exitcode }} -eq 5 ]; then
+            echo "Integration test exited with code 5 (no tests collected), treating as success"
+            exit 0
+          fi
+
+      - name: End-to-end testing
+        id: end-test
+        continue-on-error: true
+        run: |
+          just end-test
+
+      - name: Check end-to-end test result
+        if: steps.end-test.outcome == 'failure'
+        run: |
+          if [ ${{ steps.end-test.exitcode }} -eq 5 ]; then
+            echo "End-to-end test exited with code 5 (no tests collected), treating as success"
+            exit 0
+          fi
