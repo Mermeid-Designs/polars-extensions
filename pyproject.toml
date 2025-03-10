@@ -8,27 +8,28 @@ build-backend = "poetry.core.masonry.api"
 # build-backend = "poetry_dynamic_versioning.backend"
 
 [project]
-name = 'example-library'  # TODO: add project name (substituting underscores for hyphens)
-description = 'description of library'  # TODO: write short description of project
+name = 'polars-extensions'
+description = 'Extensions for Polars'
 authors = [
-    {name = 'first last', email = 'first@domain.extension'},  # TODO: substitute placeholders with your information
+    {name = 'Mermeid Designs', email = 'mermeiddesigns@gmail.com'},
 ]
 maintainers = [
-    {name = 'first last', email = 'first@domain.extension'},  # TODO: substitute placeholders with relevant information
+    {name = 'Mermeid Designs', email = 'mermeiddesigns@gmail.com'},
 ]
-requires-python = '>=3.10,<4.0'  # TODO: adjust this as needed
+requires-python = '>=3.11,<4.0'
 license = { file = "LICENSE" }
 dependencies = [
-    'numpy~=1.26'
-]  # TODO: add package dependencies for this project
+    'numpy~=1.26',
+    'polars>=0.20.0',
+]
 dynamic = ["version", "readme", "classifiers"]
-keywords = ["infrastructure"]  # TODO: add relevant keywords for this project
+keywords = ["polars", "extensions", "dataframe"]
 
 [project.urls]
-Homepage = "https://github.com/user/repo"  # TODO: substitute placeholder with repo URL
-Changelog = "https://github.com/user/repo/blob/main/CHANGELOG.md"  # TODO: substitute placeholder with repo URL
-Repository = "https://github.com/user/repo"  # TODO: substitute placeholder with repo URL
-Documentation = "https://github.com/user/repo/blob/main/README.md"  # TODO: substitute placeholder with repo URL
+# Homepage = "https://github.com/mermeid-designs/polars-extensions"
+# Changelog = "https://github.com/mermeid-designs/polars-extensions/blob/main/CHANGELOG.md"
+# Repository = "https://github.com/mermeid-designs/polars-extensions"
+# Documentation = "https://github.com/mermeid-designs/polars-extensions/blob/main/README.md"
 
 [project.scripts]
 # TODO: add all relevant script handles below in the format <handle> = "<module>:<method>"
@@ -38,7 +39,7 @@ Documentation = "https://github.com/user/repo/blob/main/README.md"  # TODO: subs
 
 [tool.poetry]
 requires-poetry = ">=2.0"
-readme = ["example_library/README.md", "example_library/USAGE.md"]  # TODO: add all relevant readme files (e.g. "docs/README.md")
+readme = ["polars_extensions/README.md", "polars_extensions/USAGE.md"]
 classifiers = [
     "Development Status :: 4 - Beta",
      # Indicate who your project is intended for
