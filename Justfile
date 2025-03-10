@@ -5,13 +5,12 @@ help:
     just --list
 
 # Install/update the pre-commit hooks for local development
-setup: check-pre-commit
+setup: check-poetry check-pre-commit
 	pre-commit install --install-hooks
 	pre-commit autoupdate
 
 # Install/update the local library and associated dependencies
-install:
-	@poetry -V || pip install poetry
+install: check-poetry
 	poetry install
 
 # Clear local caches and build artifacts
@@ -33,6 +32,13 @@ load-env:
 	eval "$(direnv hook zsh)"
 	direnv allow .
 
+# ------------------------------- PRIVATE COMMANDS -------------------------------
+
+# Check that poetry is installed
+[private]
+check-poetry:
+	poetry --version || pip install poetry
+
 # ==============================================================================
 # =========================== CODE QUALITY CHECKS =============================
 # ==============================================================================
@@ -51,17 +57,17 @@ format: check-ruff check-black
 
 # Check that pre-commit is installed
 [private]
-check-pre-commit:
+check-pre-commit: check-poetry
 	poetry show pre-commit || poetry add pre-commit --group dev
 
 # Check that ruff is installed
 [private]
-check-ruff: install
+check-ruff: check-poetry
 	poetry show ruff || poetry add ruff --group formatting
 
 # Check that black is installed
 [private]
-check-black: install
+check-black: check-poetry
 	poetry show black || poetry add black --group formatting
 
 # ==============================================================================
@@ -84,10 +90,10 @@ e2e-test: check-pytest check-pytest-asyncio
 
 # Check that pytest is installed
 [private]
-check-pytest: install
+check-pytest: check-poetry
 	poetry show pytest || poetry add pytest --group test
 
 # Check that pytest-asyncio is installed
 [private]
-check-pytest-asyncio: install
+check-pytest-asyncio: check-poetry
 	poetry show pytest-asyncio || poetry add pytest-asyncio --group test
