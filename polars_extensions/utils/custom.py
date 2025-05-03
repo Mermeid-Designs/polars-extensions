@@ -23,8 +23,8 @@ def row(
     @param by_predicate  A predicate to filter the row by.
     @param named  Whether to return a dictionary.
     """
-    if index is not None and index >= len(frame):
-        return {} if named else ()
+    if index is not None and abs(index) >= len(frame):
+        return dict() if named else tuple()
     return frame.row(index=index, by_predicate=by_predicate, named=named)
 
 

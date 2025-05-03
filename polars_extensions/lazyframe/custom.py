@@ -1,7 +1,8 @@
 from typing import Any, TypeVar
 
 import polars as pl
-import utils.custom
+
+import polars_extensions.utils.custom as custom
 
 T = TypeVar('T')
 
@@ -17,7 +18,7 @@ class Custom:
         by_predicate: pl.Expr | None = None,
         named: bool = False,
     ) -> tuple[Any, ...] | dict[str, Any]:
-        return utils.custom.row(self._ldf, index, by_predicate, named)
+        return custom.row(self._ldf, index, by_predicate, named)
 
     def get_column(self, name: str, default: T = NotImplemented) -> pl.Series | T:
-        return utils.custom.get_column(self._ldf, name, default)
+        return custom.get_column(self._ldf, name, default)
